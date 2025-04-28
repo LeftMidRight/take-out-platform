@@ -8,9 +8,11 @@ import com.sky.context.BaseContext;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.dto.EmployeePageQueryDTO;
+import com.sky.dto.PasswordEditDTO;
 import com.sky.entity.Employee;
 import com.sky.exception.AccountLockedException;
 import com.sky.exception.AccountNotFoundException;
+import com.sky.exception.PasswordEditFailedException;
 import com.sky.exception.PasswordErrorException;
 import com.sky.mapper.EmployeeMapper;
 import com.sky.result.PageResult;
@@ -18,7 +20,6 @@ import com.sky.service.EmployeeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Base64Utils;
 import org.springframework.util.DigestUtils;
 
 import java.time.LocalDateTime;
@@ -150,6 +151,31 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setUpdateUser(BaseContext.getCurrentId());
 
         employeeMapper.update(employee);
+    }
+
+    /**
+     * 修改密码
+     * @param passwordEditDTO
+     */
+    @Override
+    public void editPassword(PasswordEditDTO passwordEditDTO) {
+        // 按照id拿到对象
+        Long empId = BaseContext.getCurrentId();
+        Employee employee = employeeMapper.getById(empId);
+
+        // 校验旧密码是否正确
+        String oldPassword = employee.getPassword();
+        if(!oldPassword.equals(DigestUtils.md5DigestAsHex(passwordEditDTO.getOldPassword().getBytes()))) {
+            throw new PasswordEditFailedException("旧密码错误！");
+        }
+
+        // 把新密码存到数据库中
+        String newPassword = passwordEditDTO.getNewPassword();
+        employee.setPassword(DigestUtils.md5DigestAsHex(newPassword.getBytes()));
+
+        // 设置更新时间和更新者
+        employee.setCreateTime(LocalDateTime.now());
+        employee.setCreateUser(empId);
     }
 
 }
