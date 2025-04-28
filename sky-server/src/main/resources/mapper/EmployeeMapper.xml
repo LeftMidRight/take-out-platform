@@ -14,7 +14,7 @@
     </select>
 
 
-    <update id="update">
+    <update id="update" parameterType="Employee">
         update employee
         <set>
             <if test="id != null"> id = #{id},</if>

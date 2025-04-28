@@ -97,7 +97,6 @@ public class EmployeeController {
     @GetMapping("/page")
     @ApiOperation(value = "员工分页查询")
     public Result<PageResult> pageQuery(EmployeePageQueryDTO employeePageQueryDTO) {
-
         // 调用serveice层
         PageResult pageResult = employeeService.pageQuery(employeePageQueryDTO);
 
@@ -108,6 +107,20 @@ public class EmployeeController {
     @ApiOperation(value = "员工启用和禁用")
     public Result startOrStop(@PathVariable Integer status, Long id) {
         employeeService.startOrStop(status, id);
+        return Result.success();
+    }
+
+    @GetMapping("/{id}")
+    @ApiOperation(value = "根据id查询员工")
+    public Result<Employee> getById(@PathVariable Long id) {
+        log.info("id = {}", id);
+        return Result.success(employeeService.getById(id));
+    }
+
+    @PutMapping
+    @ApiOperation(value = "修改员工信息")
+    public Result update(@RequestBody EmployeeDTO employeeDTO) {
+        employeeService.update(employeeDTO);
         return Result.success();
     }
 }
