@@ -10,7 +10,9 @@ public interface CategoryService {
 
     /**
      *  分类分页查询
-     *
+     * @param categoryPageQueryDTO
      */
     PageResult pageQuery(CategoryPageQueryDTO categoryPageQueryDTO);
+
+
 }

@@ -1,6 +1,7 @@
 package com.sky.service.impl;
 
 import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.entity.Category;
 import com.sky.mapper.CategoryMapper;
@@ -17,8 +18,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public PageResult pageQuery(CategoryPageQueryDTO categoryPageQueryDTO) {
+        PageHelper.startPage(categoryPageQueryDTO.getPage(), categoryPageQueryDTO.getPageSize());
         Page<Category> categoryPage = categoryMapper.pageQuery(categoryPageQueryDTO);
-        return new PageResult();
+        return new PageResult(categoryPage.getTotal(), categoryPage.getResult());
     }
 
 }

@@ -4,6 +4,7 @@ import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.CategoryService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +19,8 @@ public class CategoryController {
     /**
      * 分类分页查询
      */
+    @RequestMapping("/page")
+    @ApiOperation("分类分页查询")
     public Result<PageResult> pageQuery(CategoryPageQueryDTO categoryPageQueryDTO) {
         PageResult pageResult = categoryService.pageQuery(categoryPageQueryDTO);
         return Result.success(pageResult);
