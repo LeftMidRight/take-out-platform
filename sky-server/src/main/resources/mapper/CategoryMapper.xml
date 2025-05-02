@@ -8,6 +8,22 @@
         values (#{name}, #{type}, #{sort}, #{createTime}, #{updateTime}, #{createUser}, #{updateUser})
     </insert>
 
+    <update id="update">
+        update category
+        <set>
+            <if test="name != null"> name = #{name},</if>
+            <if test="type != null"> type = #{type},</if>
+            <if test="sort != null"> sort = #{sort},</if>
+            <if test="updateTime != null"> update_time = #{updateTime},</if>
+            <if test="updateUser != null"> update_user = #{updateUser},</if>
+       </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        delete from category where id = #{id}
+    </delete>
+
     <select id="pageQuery" resultType="com.sky.entity.Category">
         select * from category
         <where>
@@ -19,6 +35,14 @@
             </if>
         </where>
         order by sort, create_time
+    </select>
+
+    <select id="getByType" resultType="com.sky.entity.Category">
+        select * from category where type = #{type}
+    </select>
+
+    <select id="getById" resultType="com.sky.entity.Category">
+        select * from category where id = #{id}
     </select>
 
 </mapper>
