@@ -1,6 +1,7 @@
 package com.sky.service.impl;
 
 import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.sky.constant.MessageConstant;
 import com.sky.constant.PasswordConstant;
 import com.sky.constant.StatusConstant;
@@ -85,13 +86,13 @@ public class EmployeeServiceImpl implements EmployeeService {
         // 设置账号状态
         employee.setStatus(StatusConstant.ENABLE);
 
-        // 设置创建时间和更新时间
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
-
-        // 设置创建人和更新人
-        employee.setCreateUser(BaseContext.getCurrentId());
-        employee.setCreateUser(BaseContext.getCurrentId());
+//        // 设置创建时间和更新时间
+//        employee.setCreateTime(LocalDateTime.now());
+//        employee.setUpdateTime(LocalDateTime.now());
+//
+//        // 设置创建人和更新人
+//        employee.setCreateUser(BaseContext.getCurrentId());
+//        employee.setCreateUser(BaseContext.getCurrentId());
 
         // 把employee对象写进数据库
         employeeMapper.insert(employee);
@@ -106,6 +107,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Override
     public PageResult pageQuery(EmployeePageQueryDTO employeePageQueryDTO) {
+        PageHelper.startPage(employeePageQueryDTO.getPage(), employeePageQueryDTO.getPageSize());
         Page<Employee> pageQueryResult = employeeMapper.pageQuery(employeePageQueryDTO);
 
         long total = pageQueryResult.getTotal();
@@ -147,8 +149,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee = new Employee();
         BeanUtils.copyProperties(employeeDTO, employee);
 
-        employee.setUpdateTime(LocalDateTime.now());
-        employee.setUpdateUser(BaseContext.getCurrentId());
+//        employee.setUpdateTime(LocalDateTime.now());
+//        employee.setUpdateUser(BaseContext.getCurrentId());
 
         employeeMapper.update(employee);
     }
@@ -173,9 +175,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         String newPassword = passwordEditDTO.getNewPassword();
         employee.setPassword(DigestUtils.md5DigestAsHex(newPassword.getBytes()));
 
-        // 设置更新时间和更新者
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setCreateUser(empId);
+//        // 设置更新时间和更新者
+//        employee.setCreateTime(LocalDateTime.now());
+//        employee.setCreateUser(empId);
+
+        employeeMapper.update(employee);
     }
 
 }
