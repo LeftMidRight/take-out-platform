@@ -14,6 +14,6 @@ public class SkyApplication {
         SpringApplication.run(SkyApplication.class, args);
         log.info("server started");
 
-        //System.out.println(DigestUtils.md5DigestAsHex("123456".getBytes()));
+//        System.out.println(DigestUtils.md5DigestAsHex("123456".getBytes()));
     }
 }
